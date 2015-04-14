@@ -149,4 +149,4 @@ Finally, you may have noticed the weird `:->` operator. This is just an alias fo
 (:->) = (,)
 ```
 
-For more details on usage, please refer to the examples in the repo. Note that this library is best used in conjunction with `elm-history` as it allows you to capture the url path as it changes and thus match on it.
+For more details on usage, please refer to the examples in the repo. Note that this library is best used in conjunction with [`elm-history`](https://github.com/TheSeamau5/elm-history) as it allows you to capture the url path as it changes and thus match on it.
