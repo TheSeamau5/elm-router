@@ -1,0 +1,192 @@
+[
+{
+  "name": "Router",
+  "comment": "Simple Router library for performing operations based on a list of string\nroutes. This is particularly useful for routing pages in single page applications\nwhere the given list of strings are list of url paths.\n\n\n# Types\n@docs Route, Router\n\n# Route Matching\n@docs match, (:-\u003e)\n\n# Useful Helper\n@docs matchPrefix",
+  "aliases": [
+    {
+      "name": "Router",
+      "comment": "A Router is a tuple containing a string and its associated route",
+      "args": [
+        "a"
+      ],
+      "type": {
+        "tag": "app",
+        "func": {
+          "tag": "type",
+          "name": "_Tuple2"
+        },
+        "args": [
+          {
+            "tag": "type",
+            "name": "String"
+          },
+          {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Route"
+            },
+            "args": [
+              {
+                "tag": "var",
+                "name": "a"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Route",
+      "comment": "A Route is a function from a string to some value or computation.",
+      "args": [
+        "a"
+      ],
+      "type": {
+        "tag": "lambda",
+        "in": {
+          "tag": "type",
+          "name": "String"
+        },
+        "out": {
+          "tag": "var",
+          "name": "a"
+        }
+      }
+    }
+  ],
+  "types": [],
+  "values": [
+    {
+      "name": ":-\u003e",
+      "comment": "Operator to offer easy-to-read DSL for matching routes. This is an alias\nfor the `(,)` tuple constructor function.",
+      "type": {
+        "tag": "lambda",
+        "in": {
+          "tag": "type",
+          "name": "String"
+        },
+        "out": {
+          "tag": "lambda",
+          "in": {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Route"
+            },
+            "args": [
+              {
+                "tag": "var",
+                "name": "a"
+              }
+            ]
+          },
+          "out": {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Router"
+            },
+            "args": [
+              {
+                "tag": "var",
+                "name": "a"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "match",
+      "comment": "`match` allows you to select an appropriate route depending on the\ngiven input string. `match` takes a list of routers and a default route,\nwhich acts as a catch-all and returns a route. Returning a route allows\nfor nested routes.\n\nExample:\n\n    mainRoute : Route Html\n    mainRoute = match\n      [ \"/\"           :-\u003e displayHomePage\n      , \"/index.html\" :-\u003e displayHomePage\n      , \"/blog\"       :-\u003e blogRoute\n      , \"/contact\"    :-\u003e displayContactsPage\n      ] display404Page\n\n    blogRoute : Route Html\n    blogRoute = match\n      [ \"/\"             :-\u003e displayBlogPostListing\n      , \"/entry1.html\"  :-\u003e displayEntry1\n      , \"/entry2.html\"  :-\u003e displayEntry2\n      ] display404Page\n\n\nIn some cases, it important to understand how `match` works. Suppose you have\nthe input path \"/users/4873/profile.html\" and there is a router that matches\n\"/users\" with an associated route `usersRoute`. The `usersRoute` function will\nget called with \"/4873/profile.html\" as a parameter. This means that `match`\nwill strip away the string it has matched from the input string before passing\nit onto the route. `match` will also match routes in the order you have stated\nthem. This means that if you have the following route:\n\n    myRoute = match\n      [ \"/user\"   :-\u003e userRoute\n      , \"/users\"  :-\u003e displayUserListing\n      ] display404Page\n\nThere is no way for `displayUserListing` to ever be called. Say you pass in\n\"/users.html\", then this will be matched by \"/user\" which will pass \"s.html\"\nto `userRoute`. To solve this, you may wish to reverse the order of the routes\nas follows:\n\n    myRoute = match\n      [ \"/users\"  :-\u003e displayUserListing\n      , \"/user\"   :-\u003e userRoute\n      ] display404Page\n\nAnd now things will work as intended.\n\nYou may notice that in the first example, I use \"/\" as a route at the very top.\nThis is because `match` special cases \"/\" and the empty string due to their\nprevalence.",
+      "type": {
+        "tag": "lambda",
+        "in": {
+          "tag": "app",
+          "func": {
+            "tag": "type",
+            "name": "List"
+          },
+          "args": [
+            {
+              "tag": "app",
+              "func": {
+                "tag": "type",
+                "name": "Router"
+              },
+              "args": [
+                {
+                  "tag": "var",
+                  "name": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "out": {
+          "tag": "lambda",
+          "in": {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Route"
+            },
+            "args": [
+              {
+                "tag": "var",
+                "name": "a"
+              }
+            ]
+          },
+          "out": {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Route"
+            },
+            "args": [
+              {
+                "tag": "var",
+                "name": "a"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "matchPrefix",
+      "comment": "Takes a reference string and a string to match and returns the second string\nstripped of the matched reference string. Used to implement `match`.\n\n    matchPrefix \"he\" \"hello\" === Just \"llo\"\n\n    matchPrefix \"yo\" \"halo\" === Nothing",
+      "type": {
+        "tag": "lambda",
+        "in": {
+          "tag": "type",
+          "name": "String"
+        },
+        "out": {
+          "tag": "lambda",
+          "in": {
+            "tag": "type",
+            "name": "String"
+          },
+          "out": {
+            "tag": "app",
+            "func": {
+              "tag": "type",
+              "name": "Maybe"
+            },
+            "args": [
+              {
+                "tag": "type",
+                "name": "String"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
+
+]
