@@ -9,10 +9,10 @@ import Signal           exposing (Mailbox, mailbox, Signal, send, message)
 displayBlog _ hash length =
   div []
     [ button
-      [ onClick (message pathChangeMailbox.address (setPath "/contacts.html")) ]
+      [ onClick pathChangeMailbox.address (setPath "/contacts.html") ]
       [ text "Contacts"]
     , button
-      [ onClick (message pathChangeMailbox.address back) ]
+      [ onClick pathChangeMailbox.address back ]
       [ text "Back"]
     , text "Blog"
     , text ("Length : " ++ toString length)
@@ -22,10 +22,10 @@ displayBlog _ hash length =
 displayContacts _ hash length =
   div []
     [ button
-      [ onClick (message pathChangeMailbox.address (setPath "/blog.html")) ]
+      [ onClick pathChangeMailbox.address (setPath "/blog.html") ]
       [ text "Blog"]
     , button
-      [ onClick (message pathChangeMailbox.address back) ]
+      [ onClick pathChangeMailbox.address back ]
       [ text "Back"]
     , text "Contacts"
     , text ("Length : " ++ toString length)
@@ -49,16 +49,16 @@ pathChangeMailbox = mailbox (Task.succeed ())
 app _ hash length =
   div []
     [ button
-      [ onClick (message pathChangeMailbox.address (setPath "/blog.html")) ]
+      [ onClick pathChangeMailbox.address (setPath "/blog.html") ]
       [ text "Blog"]
     , button
-      [ onClick (message pathChangeMailbox.address (setPath "/contacts.html")) ]
+      [ onClick pathChangeMailbox.address (setPath "/contacts.html") ]
       [ text "Contacts"]
     , button
-      [ onClick (message pathChangeMailbox.address back) ]
+      [ onClick pathChangeMailbox.address back ]
       [ text "Back"]
     , button
-      [ onClick (message pathChangeMailbox.address forward) ]
+      [ onClick pathChangeMailbox.address forward ]
       [ text "Forward"]
     , text ("Length : " ++ toString length)
     , a [ href "#yo" ] [ text "yo tag" ]
